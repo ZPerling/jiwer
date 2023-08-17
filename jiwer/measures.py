@@ -43,11 +43,7 @@ results from the
 classes.
 """
 import warnings
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.propagate = True
-logger.addHandler(logging.StreamHandler())
+import datetime
 
 from typing import List, Union, Dict, Any
 
@@ -67,6 +63,11 @@ __all__ = [
 ########################################################################################
 # Implementation of the WER method and co, exposed publicly
 
+def write_string_to_file(string):
+    now = datetime.datetime.now()
+    timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+    with open('/tmp/output.txt', 'a') as f:
+        f.write(f"{timestamp} - {string} \n")
 
 def wer(
     reference: Union[str, List[str]] = None,
@@ -116,7 +117,7 @@ def wer(
     output = process_words(
         reference, hypothesis, reference_transform, hypothesis_transform
     )
-    logger.info(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.wer}")
+    write_string_to_file(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.wer}")
     return output.wer
 
 
@@ -390,7 +391,7 @@ def cer(
         reference, hypothesis, reference_transform, hypothesis_transform
     )
 
-    logger.info(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.cer}")
+    write_string_to_file(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.cer}")
     if return_dict:
         warnings.warn(
             DeprecationWarning(
