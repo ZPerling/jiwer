@@ -43,6 +43,11 @@ results from the
 classes.
 """
 import warnings
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.propagate = True
+logger.addHandler(logging.StreamHandler())
 
 from typing import List, Union, Dict, Any
 
@@ -111,6 +116,7 @@ def wer(
     output = process_words(
         reference, hypothesis, reference_transform, hypothesis_transform
     )
+    logger.info(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.wer}")
     return output.wer
 
 
@@ -384,6 +390,7 @@ def cer(
         reference, hypothesis, reference_transform, hypothesis_transform
     )
 
+    logger.info(f"reference: {reference}, hypothesis: {hypothesis}, wer: {output.cer}")
     if return_dict:
         warnings.warn(
             DeprecationWarning(
